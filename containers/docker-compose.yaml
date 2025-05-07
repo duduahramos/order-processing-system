@@ -1,0 +1,44 @@
+name: databases
+
+services:
+  db-order:
+    image: mysql:8
+    restart: always
+    ports:
+      - "3307:3306"  # Porta externa 3307, interna continua 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: order
+    volumes:
+      - ./sql/init-order.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - backend
+
+  db-payment:
+    image: mysql:8
+    restart: always
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: payment
+    volumes:
+      - ./sql/init-payment.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - backend
+
+  db-shipping:
+    image: mysql:8
+    restart: always
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: shipping
+    volumes:
+      - ./sql/init-shipping.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - backend
+
+networks:
+  backend:

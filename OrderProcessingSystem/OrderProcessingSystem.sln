@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShippingService", "services\ShippingService\ShippingService.csproj", "{37B655D7-2546-48E2-8D7D-124AB3103A4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentProcessor", "services\PaymentProcessor\PaymentProcessor.csproj", "{ECEA1397-DE5C-4CC3-B4FF-4CDFB49E5C36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderAPI", "services\OrderAPI\OrderAPI.csproj", "{D33CE133-313A-4382-93F3-ABCAFEA4ADE6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37B655D7-2546-48E2-8D7D-124AB3103A4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37B655D7-2546-48E2-8D7D-124AB3103A4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37B655D7-2546-48E2-8D7D-124AB3103A4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37B655D7-2546-48E2-8D7D-124AB3103A4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECEA1397-DE5C-4CC3-B4FF-4CDFB49E5C36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECEA1397-DE5C-4CC3-B4FF-4CDFB49E5C36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECEA1397-DE5C-4CC3-B4FF-4CDFB49E5C36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECEA1397-DE5C-4CC3-B4FF-4CDFB49E5C36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D33CE133-313A-4382-93F3-ABCAFEA4ADE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D33CE133-313A-4382-93F3-ABCAFEA4ADE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D33CE133-313A-4382-93F3-ABCAFEA4ADE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D33CE133-313A-4382-93F3-ABCAFEA4ADE6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
