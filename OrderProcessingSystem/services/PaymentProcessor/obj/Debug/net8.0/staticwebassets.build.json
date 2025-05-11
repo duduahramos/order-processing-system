@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "jmxVia7NNq5xEyDo9nZcR6sSqbLSwafOWUvc8OBIh5k=",
+  "Source": "PaymentProcessor",
+  "BasePath": "_content/PaymentProcessor",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

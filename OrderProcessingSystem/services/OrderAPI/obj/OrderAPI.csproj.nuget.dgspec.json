@@ -44,6 +44,14 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AWSSDK.Core": {
+              "target": "Package",
+              "version": "[4.0.0.3, )"
+            },
+            "AWSSDK.SQS": {
+              "target": "Package",
+              "version": "[4.0.0.2, )"
+            },
             "AutoMapper": {
               "target": "Package",
               "version": "[14.0.0, )"
@@ -69,6 +77,10 @@
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[9.0.4, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
             },
             "OpenTelemetry.Exporter.Console": {
               "target": "Package",

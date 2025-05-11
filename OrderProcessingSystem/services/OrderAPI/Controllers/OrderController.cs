@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using OrderAPI.AWSServices.Menssaging;
 using OrderAPI.DTOs;
 using OrderAPI.DTOs.Mappings;
 using OrderAPI.Repositories.Interfaces;
@@ -11,11 +13,13 @@ public class OrderController : ControllerBase
 {
     private readonly ILogger<OrderController> _logger;
     private readonly IOrderRepository _orderRepository;
+    private readonly SQSHandler _sqsHandler;
 
-    public OrderController(ILogger<OrderController> logger, IOrderRepository orderRepository)
+    public OrderController(ILogger<OrderController> logger, IOrderRepository orderRepository,  SQSHandler sqsHandler)
     {
         _logger = logger;
         _orderRepository = orderRepository;
+        _sqsHandler = sqsHandler;
     }
 
     [HttpGet]
@@ -60,6 +64,8 @@ public class OrderController : ControllerBase
         await _orderRepository.CommitAsync();
         
         var createdOrderDto = order.ToDTO();
+
+        await _sqsHandler.SendAsync(JsonConvert.SerializeObject(createdOrderDto));
 
         return CreatedAtAction(nameof(Get), new { id = createdOrderDto.OrderId }, createdOrderDto);
     }

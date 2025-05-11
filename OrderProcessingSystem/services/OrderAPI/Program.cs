@@ -5,6 +5,7 @@ using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using OrderAPI.AWSServices.Menssaging;
 using OrderAPI.Data;
 using OrderAPI.Repositories;
 using OrderAPI.Repositories.Interfaces;
@@ -18,6 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<SQSHandler>();
 
 var mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
 var mySqlServerVersion = new MySqlServerVersion(new Version(8, 4, 5));

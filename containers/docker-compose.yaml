@@ -9,8 +9,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: order
-    volumes:
-      - ./sql/init-order.sql:/docker-entrypoint-initdb.d/init.sql
+    # volumes:
+    #   - ./sql/init-order.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - backend
 
@@ -22,8 +22,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: payment
-    volumes:
-      - ./sql/init-payment.sql:/docker-entrypoint-initdb.d/init.sql
+    # volumes:
+    #   - ./sql/init-payment.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - backend
 
@@ -35,8 +35,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: shipping
-    volumes:
-      - ./sql/init-shipping.sql:/docker-entrypoint-initdb.d/init.sql
+    # volumes:
+    #   - ./sql/init-shipping.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - backend
 

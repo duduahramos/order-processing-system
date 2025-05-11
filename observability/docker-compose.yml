@@ -1,0 +1,116 @@
+name: stack-observabilidade
+
+networks:
+  telemetry_net:
+    name: telemetry_net
+    driver: bridge
+
+volumes:
+    loki_volume:
+      name: loki_volume
+
+# https://opentelemetry.io/docs/demo/services/frontend/
+# https://opentelemetry.io/docs/languages/js/exporters/#configure-cors-headers
+# https://medium.com/@eliasvitor.dev/nginx-com-docker-a-combina%C3%A7%C3%A3o-perfeita-para-o-gerenciamento-de-servidores-web-f585b40a9e22
+services:
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:11.6.0
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor
+    volumes:
+      - ./infra/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+    ports:
+      - "3333:3000"
+    networks:
+      - telemetry_net
+    depends_on:
+      - collector
+      - jaeger
+      - tempo
+      - loki
+      - prometheus
+
+  collector:
+    container_name: collector
+    image: otel/opentelemetry-collector-contrib:0.123.0
+    command: [ "--config=/etc/collector.yaml" ]
+    ports:
+      - "8889:8889" # Prometheus metrics exporter (scrape endpoint)
+      - "4317:4317" # GRPC - Endpoint where application will be pushing telemetry data, e.g. logs, traces, and metrics.
+      - "4318:4318" # HTTP - Endpoint where application will be pushing telemetry data, e.g. logs, traces, and metrics.
+    volumes:
+      - ./infra/otel-collector-config.yaml:/etc/collector.yaml
+    depends_on:
+      - jaeger
+      - tempo
+      - loki
+    networks:
+      - telemetry_net
+
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/jaeger:2.4.0 # prod
+    # image: jaegertracing/all-in-one:latest # dev
+    ports:
+      - "16686:16686"  # UI
+    restart: unless-stopped
+    networks:
+      - telemetry_net
+
+  tempo:
+    container_name: tempo
+    image: grafana/tempo:latest
+    ports:
+      - "3200:3200"
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./infra/tempo.yaml:/etc/tempo.yaml
+    networks:
+      - telemetry_net
+
+  loki:
+    container_name: loki
+    image: grafana/loki:3.4.2
+    restart: unless-stopped
+    environment:
+      - TZ=America/Sao_Paulo
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./infra/loki-config.yaml:/etc/loki/local-config.yaml:ro
+      - loki_volume:/tmp
+    depends_on:
+      - promtail
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - telemetry_net
+
+  promtail:
+    container_name: promtail
+    image: grafana/promtail:3.4.2
+    environment:
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ./infra/app-dev-logs.log:/var/log/app-dev-logs.log
+      - ./infra/promtail-config.yaml:/etc/promtail/promtail-config.yaml:ro
+    command: -config.file=/etc/promtail/promtail-config.yaml
+    networks:
+      - telemetry_net
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v3.3.0-rc.0
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infra/prometheus-config.yaml:/etc/prometheus/prometheus.yaml
+    depends_on:
+      - collector
+      - loki
+    networks:
+      - telemetry_net
